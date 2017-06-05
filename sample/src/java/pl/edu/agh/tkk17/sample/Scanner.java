@@ -49,6 +49,13 @@ public class Scanner implements Iterator<Token>, Iterable<Token>
         char character = this.character;
         Token token;
 
+
+	while(character == ' '){
+		this.readChar();
+		character = this.character;
+	}
+
+
         if (character == '+') {
             token = this.makeToken(TokenType.ADD);
             this.readChar();
@@ -59,7 +66,7 @@ public class Scanner implements Iterator<Token>, Iterable<Token>
             String value = String.valueOf(character);
          //   token = this.makeToken(TokenType.NUM, value);
             this.readChar();
-// --------- LICZBY WIELOCYFROWE	
+// --------- LICZBY WIELOCYFROWE ------------------------------
 		character = this.character;
 		while(character >= '0' && character <= '9'){
 			value += String.valueOf(character);
@@ -67,8 +74,10 @@ public class Scanner implements Iterator<Token>, Iterable<Token>
 			character = this.character;
 		}
 		token = this.makeToken(TokenType.NUM, value);
-// ------------------------------	
-        } else if (character == '\n' || character == '\u0000') {
+// ------------------------------------------------------------
+//        } else if (character == ')' || character == '('){
+//		this.readChar();
+	} else if (character == '\n' || character == '\u0000') {
             token = this.makeToken(TokenType.END);
             this.readChar();
         } else {
