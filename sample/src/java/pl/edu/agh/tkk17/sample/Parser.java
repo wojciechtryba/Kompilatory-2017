@@ -36,6 +36,26 @@ public class Parser
         }
     }
 
+    private Node parseFactor()
+    {
+	if (this.check(TokenType.LBR)) {
+		this.forward();
+		Node n = this.parseExpression();	// <--------------- tu usuwać zamknięcia
+		if ( this.check(TokenType.RBR) ) {
+			this.forward();
+			return n;
+		} else throw new UnexpectedTokenException(this.ctoken);
+	} else if (this.check(TokenType.NUM)) {
+		Node n = parseNumber();
+//		while (this.check(TokenType.RBR)) this.forward();
+		return n;
+	}// else if (this.check(TokenType.RBR)) {
+	//	this.forward();
+	//	return this.parseExpression();
+	//} 
+	else throw new UnexpectedTokenException(this.ctoken);
+    }
+
     private Node parseNumber()
     {
         this.expect(TokenType.NUM);
@@ -46,6 +66,7 @@ public class Parser
 
     private Node parseTerm()
     {
+/*
         Node left = this.parseNumber();
         if (this.check(TokenType.MUL)) {
             this.forward();
@@ -54,16 +75,43 @@ public class Parser
         } else {
             return left;
         }
+*/
+	Node left = this.parseFactor(); //parseNumber();
+        if (this.check(TokenType.MUL)) {
+            this.forward();
+            Node right = this.parseTerm();
+            return new NodeMul(left, right);
+        } else if (this.check(TokenType.DIV)) {
+            this.forward();
+            Node right = this.parseTerm();
+            return new NodeDiv(left, right);
+	} else {
+            return left;
+        }
     }
 
     private Node parseExpression()
     {
+/*
         Node left = this.parseTerm();
         if (this.check(TokenType.ADD)) {
             this.forward();
             Node right = this.parseExpression();
             return new NodeAdd(left, right);
         } else {
+            return left;
+        }
+*/
+	Node left = this.parseTerm();
+        if (this.check(TokenType.ADD)) {
+            this.forward();
+            Node right = this.parseExpression();
+            return new NodeAdd(left, right);
+        } else if (this.check(TokenType.SUB)) {
+            this.forward();
+            Node right = this.parseExpression();
+            return new NodeSub(left, right);
+	} else {
             return left;
         }
     }

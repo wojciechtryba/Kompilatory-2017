@@ -62,7 +62,13 @@ public class Scanner implements Iterator<Token>, Iterable<Token>
         } else if (character == '*') {
             token = this.makeToken(TokenType.MUL);
             this.readChar();
-        } else if (character >= '0' && character <= '9') {
+        } else if (character == '-') {
+	    token = this.makeToken(TokenType.SUB);	// odejmowanie
+	    this.readChar();
+	} else if (character == '/') {
+	    token = this.makeToken(TokenType.DIV);	// dzielenie
+	    this.readChar();
+	} else if (character >= '0' && character <= '9') {
             String value = String.valueOf(character);
          //   token = this.makeToken(TokenType.NUM, value);
             this.readChar();
@@ -75,8 +81,12 @@ public class Scanner implements Iterator<Token>, Iterable<Token>
 		}
 		token = this.makeToken(TokenType.NUM, value);
 // ------------------------------------------------------------
-//        } else if (character == ')' || character == '('){
-//		this.readChar();
+        } else if (character == '(') {
+		token = this.makeToken(TokenType.LBR);
+		this.readChar();
+	} else if (character == ')') {
+		token = this.makeToken(TokenType.RBR);
+		this.readChar();
 	} else if (character == '\n' || character == '\u0000') {
             token = this.makeToken(TokenType.END);
             this.readChar();

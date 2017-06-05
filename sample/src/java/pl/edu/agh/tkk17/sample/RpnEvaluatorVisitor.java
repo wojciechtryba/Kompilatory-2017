@@ -42,4 +42,26 @@ public class RpnEvaluatorVisitor implements NodeVisitor
         Float numericValue = Float.parseFloat(value);
         this.stack.push(numericValue);
     }
+
+    public void visit(NodeDiv node)
+    {
+        node.getLeft().accept(this);
+        node.getRight().accept(this);
+        Float a = this.stack.pop();
+	if (a == 0) throw new OutputableException("Division by 0.");
+        Float b = this.stack.pop();
+        Float c = b / a;
+        this.stack.push(c);
+    }
+
+    public void visit(NodeSub node)
+    {
+        node.getLeft().accept(this);
+        node.getRight().accept(this);
+        Float a = this.stack.pop();
+        Float b = this.stack.pop();
+        Float c = b - a;
+        this.stack.push(c);
+    }
+
 }
