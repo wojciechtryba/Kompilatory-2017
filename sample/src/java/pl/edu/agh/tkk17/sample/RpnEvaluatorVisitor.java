@@ -4,14 +4,14 @@ import java.util.Stack;
 
 public class RpnEvaluatorVisitor implements NodeVisitor
 {
-    private Stack<Integer> stack;
+    private Stack<Float> stack;
 
     public RpnEvaluatorVisitor()
     {
-        this.stack = new Stack<Integer>();
+        this.stack = new Stack<Float>();
     }
 
-    public Integer getValue()
+    public Float getValue()
     {
         return this.stack.peek();
     }
@@ -20,9 +20,9 @@ public class RpnEvaluatorVisitor implements NodeVisitor
     {
         node.getLeft().accept(this);
         node.getRight().accept(this);
-        Integer a = this.stack.pop();
-        Integer b = this.stack.pop();
-        Integer c = b + a;
+        Float a = this.stack.pop();
+        Float b = this.stack.pop();
+        Float c = b + a;
         this.stack.push(c);
     }
 
@@ -30,16 +30,16 @@ public class RpnEvaluatorVisitor implements NodeVisitor
     {
         node.getLeft().accept(this);
         node.getRight().accept(this);
-        Integer a = this.stack.pop();
-        Integer b = this.stack.pop();
-        Integer c = b * a;
+        Float a = this.stack.pop();
+        Float b = this.stack.pop();
+        Float c = b * a;
         this.stack.push(c);
     }
 
     public void visit(NodeNumber node)
     {
         String value = node.getValue();
-        Integer numericValue = Integer.parseInt(value);
+        Float numericValue = Float.parseFloat(value);
         this.stack.push(numericValue);
     }
 }
